@@ -1,18 +1,39 @@
 # Acumatica File Attachment Import
 ##### Utility for Bulk Importing of Attachments to Acumatica
 
-
-This utility takes a .csv file with a combination of Record Type, Key values of that record, file path of the soon to be attachment, and an optional fileName, and uploads the file to the specified record
-
-#### Csv Format
-
-Doc Type | File Path | File Name (optional) | Key 1 | Key 2 | Key 3 | Key 4 | Key 5
--------- | --------- | -------------------- | ----- | ----- | ----- | ----- | -----
-SalesOrder | C:\Temp\attachment.pdf | The utility will take 'attachment.pdf' if this is blank | SO | 00001| | | 
+## Developer : Shiv
+## Version : v1.0.2
+## Added : Changed UI
+## Added : Changed flow of uploading files.
+## date  : 31.01.2022
 
 
-## Supported Records
+This utility takes a file from folder path with a combination of Record Type, Key values of that record, file path of the soon to be attachment, and uploads the file to the specified record.
 
+## Configuration
+## Add configuration to configuration tab.
+## click configure to connect Acumatica instance.  
+
+
+## To upload image to specific stock-item, need to put InventoryCD in 'BULK IMPORT' tab then select folder containing files to be uploaded.
+Folder name does not matter here.
+
+## To Upload image from 'Image Import' tab. name all images with associated InventoryCD (eg. InventoryCD.png). keep all images in the folder.
+## select folder then click upload button.    
+
+## Folder name formate should be below for PDF upload from 'PDF Import'.
+
+folder name|
+-------- 
+SalesOrder |
+PurchaseOrder |
+ARInvoice |
+APInvoice |
+ARPayment |
+APPayment |
+CreditMemo | 
+
+## Supported Records for 'PDF Import'. 
 
 Doc Type |
 -------- |
@@ -22,6 +43,4 @@ ARInvoice |
 APInvoice |
 ARPayment |
 APPayment |
-
-
-
+CreditMemo |
