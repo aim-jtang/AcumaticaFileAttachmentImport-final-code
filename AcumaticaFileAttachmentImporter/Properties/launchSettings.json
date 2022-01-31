@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AcumaticaFileAttachmentImporter": {
+      "commandName": "Project",
+      "nativeDebugging": true
+    }
+  }
+}
