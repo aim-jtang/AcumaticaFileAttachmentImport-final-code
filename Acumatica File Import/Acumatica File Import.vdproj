@@ -259,20 +259,6 @@
     {
         "CustomAction"
         {
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_8F6FB321A6644621802FCB48C0E9B4F3"
-            {
-            "Name" = "8:Acumatica File Importer"
-            "Condition" = "8:"
-            "Object" = "8:_495DC3E2CE4E482F9BB7D74D04405D49"
-            "FileType" = "3:2"
-            "InstallAction" = "3:2"
-            "Arguments" = "8:"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_B0D51BEE_B897_40BC_AA5A_8DFF002D0B9B"
-            "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
-            }
         }
         "DefaultFeature"
         {
