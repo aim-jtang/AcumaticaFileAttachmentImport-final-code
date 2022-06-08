@@ -37,6 +37,12 @@ namespace Acumatica_File_Importer
         ///Image uploaded files name
         List<string> iiInventoryCD = new List<string>();
 
+        ///Image uploaded from folder named inventoryCD
+        List<string> reffiles = new List<string>();
+        List<string> reffilesPath = new List<string>();
+        ///Image uploaded files name
+        string vendorReference = "";
+
         int fileCount = 0;
 
         AcConfiguration configuration = null;
@@ -100,6 +106,7 @@ namespace Acumatica_File_Importer
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
 
             lblbulkIIfileurl.Text = "";
+            lblErrorRef.Text = "";
             //manualConfire();
         }
 
@@ -112,7 +119,9 @@ namespace Acumatica_File_Importer
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            imageimport.Checked = true;
+            ImagePanel.Show();
+            PDFPanel.Hide();
         }
 
         /// <summary>
@@ -189,6 +198,53 @@ namespace Acumatica_File_Importer
                     var filename = item.Substring(item.LastIndexOf('\\') + 1);
                     iiInventoryCD.Add(filename.Substring(0, filename.LastIndexOf('.')));
                     iifiles.Add(item);
+                }
+
+                if (fileCount == 0)
+                {
+                    MessageBox.Show(Globals.NOREADBLEFILE);
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                Log.Write(ex.Message, "");
+            }
+        }
+
+        private void ConfigureVendorRefUploads()
+        {
+            try
+            {
+                fileCount = 0;
+
+                if (!isConfigured)
+                {
+                    MessageBox.Show(Globals.EMPTYCONFIGURATION);
+                    return;
+                }
+
+                var folderlocation = lblErrorRef.Text;
+                reffiles.Clear();
+                reffilesPath.Clear();
+
+                if (!Directory.Exists(folderlocation))
+                {
+                    MessageBox.Show(Globals.FOLDERNOTEXISTS);
+                    return;
+                };
+
+                vendorReference = folderlocation.Substring(folderlocation.LastIndexOf('\\') + 1);
+
+                string[] filenames = Directory.GetFiles(folderlocation, ".", SearchOption.AllDirectories);
+
+                foreach (var item in filenames)
+                {
+                    fileCount = fileCount + 1;
+                    var filename = item.Substring(item.LastIndexOf('\\') + 1);
+                    reffiles.Add(filename);
+                    reffilesPath.Add(item);
                 }
 
                 if (fileCount == 0)
@@ -465,13 +521,19 @@ namespace Acumatica_File_Importer
         public void updatePDFProgressBar()
         {
             var updated = (decimal)((decimal)fileCount / files.Count * 100);
-            progressBarPDF.Increment((int)updated);
+            PDFProgressBar.Increment((int)updated);
         }
 
         public void updateIIProgressBar()
         {
             var updated = (decimal)((decimal)fileCount / files.Count * 100);
             BIIProgressBar.Increment((int)updated);
+        }
+
+        public void updateRefProgressBar()
+        {
+            var updated = (decimal)((decimal)fileCount / reffiles.Count * 100);
+            progressBarRef.Increment((int)updated);
         }
 
 
@@ -509,7 +571,7 @@ namespace Acumatica_File_Importer
         {
             configuration = new AcConfiguration()
             {
-                baseURL = "http://localhost/AcV(21.204.0055)",
+                baseURL = "http://localhost/AcumaticaDBv(21.115.0017)1/",
                 pwd = "admin",
                 branch = "",
                 company = "company",
@@ -773,7 +835,6 @@ namespace Acumatica_File_Importer
             catch (Exception ex)
             {
                 
-                throw;
             }
         }
 
@@ -938,7 +999,7 @@ namespace Acumatica_File_Importer
                 }
 
                 files.Clear();
-                progressBarPDF.Visible = true;
+                PDFProgressBar.Visible = true;
 
                 //Folder name as document type
                 var orderType = PDFIfileurl.Text.Substring(PDFIfileurl.Text.LastIndexOf("\\") + 1);
@@ -1007,14 +1068,14 @@ namespace Acumatica_File_Importer
                                 {
                                     MessageBox.Show(Globals.ALLFILEUPDATED);
                                     PDFIfileurl.Text = string.Empty;
-                                    progressBarPDF.Visible = false;
+                                    PDFProgressBar.Visible = false;
                                     PDFButton.Enabled = false;
                                 }
                             }
                             else {
                                 MessageBox.Show(service.errorMessage);
                                 PDFIfileurl.Text = string.Empty;
-                                progressBarPDF.Visible = false;
+                                PDFProgressBar.Visible = false;
                                 PDFButton.Enabled = false;
                             }
                         }
@@ -1022,7 +1083,7 @@ namespace Acumatica_File_Importer
                     else if (x.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                     {
                         MessageBox.Show("401 Unauthorized access.");
-                        progressBarPDF.Visible = false;
+                        PDFProgressBar.Visible = false;
                     }
                 }
 
@@ -1032,7 +1093,7 @@ namespace Acumatica_File_Importer
             {
                 Log.Write(ex.Message, "");
                 MessageBox.Show(Globals.FAILEDTOUPLOADFILES);
-                progressBarPDF.Visible = false;
+                PDFProgressBar.Visible = false;
             }
 
         }
@@ -1058,28 +1119,7 @@ namespace Acumatica_File_Importer
 
       
 
-        private void InventoryCD_KeyPress(object sender, KeyEventArgs e)
-        {
-            try
-            {
-
-                if (InventoryCD.Text.Trim().Length > 0)
-                {
-                    isValidStockItem = validStockItem(InventoryCD.Text);
-                }
-                else
-                {
-
-                    isValidStockItem = false;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
-        }
+       
 
         private void lblbulkIIfileurl_Enter(object sender, EventArgs e)
         {
@@ -1133,6 +1173,140 @@ namespace Acumatica_File_Importer
 
             toolTip1.SetToolTip(PDFIfileurl, lbl.Text);
         }
+
+        private void imageimport_CheckedChanged(object sender, EventArgs e)
+        {
+            ImagePanel.Show();
+            PDFPanel.Hide();
+        }
+
+        private void pdfimport_CheckedChanged(object sender, EventArgs e)
+        {
+          
+            ImagePanel.Hide();
+            PDFPanel.Show();
+        }
+
+        
+
+        private void browseFolderPathRef_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!isConfigured)
+                {
+                    MessageBox.Show(Globals.EMPTYCONFIGURATION);
+                    return;
+                }
+
+                FolderBrowserDialog folderDlg = new FolderBrowserDialog();
+                folderDlg.ShowNewFolderButton = false;
+                // Show the FolderBrowserDialog.  
+                DialogResult result = folderDlg.ShowDialog();
+
+                if (result == DialogResult.OK)
+                {
+                    lblErrorRef.Text = folderDlg.SelectedPath;
+                    Environment.SpecialFolder root = folderDlg.RootFolder;
+
+                    ConfigureVendorRefUploads();
+
+                    if (reffiles.Count == 0)
+                    {
+                        btnUploadRef.Enabled = false;
+                    }
+                    else
+                    {
+                        btnUploadRef.Enabled = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Write(ex.Message, "");
+                throw;
+            }
+        }
+
+        private void btnUploadRef_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                progressBarRef.Visible = true;
+                entity = "bill";
+                
+
+                if (isConfigured)
+                {
+                    var service = new RestService(configuration.baseURL, configuration.user, configuration.pwd, configuration.company, configuration.branch, entity);
+                    fileCount = 0;
+
+                    foreach (var file in reffilesPath)
+                    {
+                        var x = service.LoginAsync(configuration.baseURL, configuration.user, configuration.pwd, configuration.company, configuration.branch);
+                        fileCount++;
+                        // To get progressBar incremental value
+
+
+                        if (x.StatusCode == System.Net.HttpStatusCode.NoContent)
+                        {
+                            string filename = file;
+                            var filen = reffiles[fileCount - 1];
+
+                            using (StreamReader sr = new StreamReader(filename))
+                            {
+                                var response = service.PutFileByVendorReference(entity, vendorReference, filen.Substring(0, filen.LastIndexOf('.')), filen, sr.BaseStream);
+
+                                //if (response.Length == 0)
+                                //{
+                                    if (progressBarRef.InvokeRequired)
+                                    {
+                                        Invoke(new MethodInvoker(updateRefProgressBar));
+                                    }
+                                    else
+                                    {
+                                        // updating progressbar
+                                        updateRefProgressBar();
+                                    }
+
+                                    if (fileCount == reffiles.Count)
+                                    {
+                                        MessageBox.Show(Globals.ALLFILEUPDATED);
+                                        lblErrorRef.Text = string.Empty;
+                                        progressBarRef.Visible = false;
+                                        btnUploadRef.Enabled = false;
+                                    }
+                                //}
+                            }
+
+                        }
+                        else if (x.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                        {
+                            MessageBox.Show(Globals.UNAUTHORIZEDACCESS);
+                        }
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show(Globals.EMPTYCONFIGURATION);
+                    tabControl1.TabPages[3].Focus();
+                    progressBarRef.Visible = false;
+                }
+                progressBarRef.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                Log.Write(ex.Message, "");
+                MessageBox.Show(Globals.FAILEDTOUPLOADFILES);
+                throw;
+            }
+        }
+
+        //private void InventoryCD_KeyPress(object sender, KeyPressEventArgs e)
+        //{
+        //    if (e.KeyChar == '32') return;
+        //}
     }
 
 

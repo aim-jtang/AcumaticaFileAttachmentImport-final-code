@@ -68,6 +68,69 @@ namespace System
             return res.Content.ReadAsStringAsync().Result;
         }
 
+        public static byte[] ReadFully(Stream input)
+        {
+            byte[] buffer = new byte[16 * 1024];
+            using (MemoryStream ms = new MemoryStream())
+            {
+                int read;
+                while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    ms.Write(buffer, 0, read);
+                }
+                return ms.ToArray();
+            }
+        }
+
+        public string PutFileByVendorReference(string key, string vendorReferenceTxt, string referenceNbr,
+         string fileName, System.IO.Stream file)
+        {
+            this._endpointName = "custom";
+            HttpResponseMessage res;
+            var attachFileUrl = _acumaticaBaseUrl + "/entity/" + this._endpointName + "/" + this._endpointVersion + "/" + this._entity + "/byVendorReference";
+
+            var vendorReference = new VendorReferenceEntity.Root
+            {
+                entity = new VendorReferenceEntity.Entity
+                {
+                    //ReferenceNbr = new VendorReferenceEntity.ReferenceNbr
+                    //{
+                    //    value = referenceNbr
+                    //},
+                    //Type = new VendorReferenceEntity.Type
+                    //{
+                    //    value = key
+                    //}
+                },
+                parameters = new VendorReferenceEntity.Parameters
+                {
+                    File = new VendorReferenceEntity.File { value = Convert.ToBase64String(ReadFully(file)) },
+                    FileName = new VendorReferenceEntity.FileName { value = fileName },
+                    Ref = new VendorReferenceEntity.Ref
+                    {
+                        value = vendorReferenceTxt
+                    },
+                    RefNbr = new VendorReferenceEntity.RefNbr { value = referenceNbr }
+
+                }
+            };
+
+            var json = JsonConvert.SerializeObject(vendorReference, Formatting.None);
+            var buffer = System.Text.Encoding.UTF8.GetBytes(json);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            //var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+            //Attach a file to a stock item record
+            res = _httpClient.PostAsync(attachFileUrl, byteContent).Result;
+
+            errorMessage = res.Content.ReadAsStringAsync().Result;
+
+            Logout();
+
+            return res.Content.ReadAsStringAsync().Result;
+        }
+
 
         public string fetchInventory(string key)
         {
@@ -125,7 +188,7 @@ namespace System
                     errorMessage = "Internal Server Error.";
                 else if (result.Result.Content.ReadAsStringAsync().Result.Length == 0)
                     errorMessage = "Connected";
-                else if(result.Result.Content.ReadAsStringAsync().Result.Contains("API Login Limit"))
+                else if (result.Result.Content.ReadAsStringAsync().Result.Contains("API Login Limit"))
                     errorMessage = "API Login Limit Reached.";
                 else if (result.Result.Content.ReadAsStringAsync().Result.Contains("An error occurred while sending the request"))
                     errorMessage = "An error occurred while sending the request.";
@@ -164,6 +227,62 @@ namespace System
     }
 
 
+
+
+}
+
+namespace VendorReferenceEntity
+{
+    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
+    public class Type
+    {
+        public string value { get; set; }
+    }
+
+    public class ReferenceNbr
+    {
+        public string value { get; set; }
+    }
+
+    public class Entity
+    {
+        public Type Type { get; set; }
+        public ReferenceNbr ReferenceNbr { get; set; }
+    }
+
+    public class FileName
+    {
+        public string value { get; set; }
+    }
+
+    public class Ref
+    {
+        public string value { get; set; }
+    }
+
+    public class RefNbr
+    {
+        public string value { get; set; }
+    }
+
+    public class File
+    {
+        public string value { get; set; }
+    }
+
+    public class Parameters
+    {
+        public FileName FileName { get; set; }
+        public Ref Ref { get; set; }
+        public RefNbr RefNbr { get; set; }
+        public File File { get; set; }
+    }
+
+    public class Root
+    {
+        public Entity entity { get; set; }
+        public Parameters parameters { get; set; }
+    }
 
 
 }
