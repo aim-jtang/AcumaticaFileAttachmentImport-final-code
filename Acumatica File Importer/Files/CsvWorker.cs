@@ -1,8 +1,7 @@
 ﻿
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using AcumaticaFilesImport.Files.Csv;
+using System.Collections.Generic;
+using System.Text;
 using TinyCsvParser;
 using TinyCsvParser.Mapping;
 
@@ -12,7 +11,7 @@ namespace AcumaticaFilesImport.Files
     {
         public CsvWorker()
         {
-            CsvParserOptions options = new CsvParserOptions(false,',');
+            CsvParserOptions options = new CsvParserOptions(false, ',');
             _parser = new CsvParser<UploadItem>(options, new CsvAttachmentRecordMapping());
         }
 

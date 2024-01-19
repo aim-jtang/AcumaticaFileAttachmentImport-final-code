@@ -7,7 +7,7 @@ namespace AcumaticaFilesImport.Acumatica
     {
         public DocTypeUnrecognizedException() : base()
         {
-            
+
         }
     }
 }
