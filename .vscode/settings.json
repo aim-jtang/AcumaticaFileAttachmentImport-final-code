@@ -1,6 +1,3 @@
 {
-    "dotnet.preferCSharpExtension": true,
-    "files.watcherExclude": {
-        "**/target": true
-    }
+    "dotnet.preferCSharpExtension": true
 }
