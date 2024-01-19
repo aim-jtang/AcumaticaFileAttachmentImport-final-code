@@ -5,7 +5,7 @@ using System.IO;
 
 namespace AcumaticaFilesImport.Files.Csv
 {
-    public class UploadItem
+    public class UploadItem 
     {
         public DocType DocType { get; set; }
         public string FilePath { get; set; }
@@ -42,7 +42,7 @@ namespace AcumaticaFilesImport.Files.Csv
 
                     return File.OpenRead(FilePath);
                 }
-
+                
                 throw new FileNotFoundException("Filepath defined in CSV not valid");
             }
         }

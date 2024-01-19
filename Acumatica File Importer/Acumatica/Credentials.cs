@@ -1,6 +1,12 @@
-﻿namespace Acumatica_File_Importer.Acumatica
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Acumatica_File_Importer.Acumatica
 {
-    public class AcConfiguration
+   public class AcConfiguration
     {
         public string baseURL { get; set; }
         public string user { get; set; }

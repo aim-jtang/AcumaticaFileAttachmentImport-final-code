@@ -1,15 +1,21 @@
-﻿using Acumatica;
-using Acumatica_File_Importer.Acumatica;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Drawing;
-using System.IO;
-using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
+using System.IO;
+using System.Configuration;
+using AcumaticaFilesImport;
+using AcumaticaFilesImport.Files;
+using System.Text;
+using Microsoft.Extensions.Logging;
+using System.Drawing;
+using System.Collections.Generic;
+using System.Web;
+using System.Windows.Threading;
+using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Reflection;
+using Acumatica;
+using Acumatica_File_Importer.Acumatica;
 using File = System.IO.File;
 
 namespace Acumatica_File_Importer
@@ -592,7 +598,7 @@ namespace Acumatica_File_Importer
 
             var service = new RestService(configuration.baseURL, configuration.user, configuration.pwd, configuration.company, configuration.branch, entity);
             try
-            {
+            {             
                 var x = service.LoginAsync(configuration.baseURL, configuration.user, configuration.pwd, configuration.company, configuration.branch);
 
                 if (x.StatusCode == System.Net.HttpStatusCode.NoContent)
@@ -776,8 +782,7 @@ namespace Acumatica_File_Importer
                                 isValid = false;
                         }
                     }
-                    else
-                    {
+                    else {
                         MessageBox.Show(service.errorMessage);
                     }
                 }
@@ -829,7 +834,7 @@ namespace Acumatica_File_Importer
             }
             catch (Exception ex)
             {
-
+                
             }
         }
 
@@ -1067,8 +1072,7 @@ namespace Acumatica_File_Importer
                                     PDFButton.Enabled = false;
                                 }
                             }
-                            else
-                            {
+                            else {
                                 MessageBox.Show(service.errorMessage);
                                 PDFIfileurl.Text = string.Empty;
                                 PDFProgressBar.Visible = false;
@@ -1113,13 +1117,13 @@ namespace Acumatica_File_Importer
             }
         }
 
+      
 
-
-
+       
 
         private void lblbulkIIfileurl_Enter(object sender, EventArgs e)
         {
-
+          
         }
 
         private void lblbulkIIfileurl_MouseHover(object sender, EventArgs e)
@@ -1178,12 +1182,12 @@ namespace Acumatica_File_Importer
 
         private void pdfimport_CheckedChanged(object sender, EventArgs e)
         {
-
+          
             ImagePanel.Hide();
             PDFPanel.Show();
         }
 
-
+        
 
         private void browseFolderPathRef_Click(object sender, EventArgs e)
         {
@@ -1230,7 +1234,7 @@ namespace Acumatica_File_Importer
             {
                 progressBarRef.Visible = true;
                 entity = "bill";
-
+                
 
                 if (isConfigured)
                 {
@@ -1255,23 +1259,23 @@ namespace Acumatica_File_Importer
 
                                 //if (response.Length == 0)
                                 //{
-                                if (progressBarRef.InvokeRequired)
-                                {
-                                    Invoke(new MethodInvoker(updateRefProgressBar));
-                                }
-                                else
-                                {
-                                    // updating progressbar
-                                    updateRefProgressBar();
-                                }
+                                    if (progressBarRef.InvokeRequired)
+                                    {
+                                        Invoke(new MethodInvoker(updateRefProgressBar));
+                                    }
+                                    else
+                                    {
+                                        // updating progressbar
+                                        updateRefProgressBar();
+                                    }
 
-                                if (fileCount == reffiles.Count)
-                                {
-                                    MessageBox.Show(Globals.ALLFILEUPDATED);
-                                    lblErrorRef.Text = string.Empty;
-                                    progressBarRef.Visible = false;
-                                    btnUploadRef.Enabled = false;
-                                }
+                                    if (fileCount == reffiles.Count)
+                                    {
+                                        MessageBox.Show(Globals.ALLFILEUPDATED);
+                                        lblErrorRef.Text = string.Empty;
+                                        progressBarRef.Visible = false;
+                                        btnUploadRef.Enabled = false;
+                                    }
                                 //}
                             }
 

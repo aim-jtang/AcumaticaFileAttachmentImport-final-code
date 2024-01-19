@@ -1,33 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.8.34330.188
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Acumatica File Importer", "Acumatica File Importer\Acumatica File Importer.csproj", "{E8B92EF9-64D5-4741-91F4-E9996614A225}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9FAB7773-D696-49F1-847E-0EF3251C1F6D} = {9FAB7773-D696-49F1-847E-0EF3251C1F6D}
-	EndProjectSection
-EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Fanim23R2", "http://localhost/Fanim23R2", "{9FAB7773-D696-49F1-847E-0EF3251C1F6D}"
-	ProjectSection(WebsiteProperties) = preProject
-		UseIISExpress = "false"
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
-		Debug.AspNetCompiler.VirtualPath = "/Fanim23R2"
-		Debug.AspNetCompiler.PhysicalPath = "..\..\..\..\..\..\Program Files\Acumatica ERP\Fanim23R2\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Fanim23R2\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/Fanim23R2"
-		Release.AspNetCompiler.PhysicalPath = "..\..\..\..\..\..\Program Files\Acumatica ERP\Fanim23R2\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\Fanim23R2\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		SlnRelativePath = "..\..\..\..\..\..\Program Files\Acumatica ERP\Fanim23R2\"
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,14 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E8B92EF9-64D5-4741-91F4-E9996614A225}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8B92EF9-64D5-4741-91F4-E9996614A225}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E8B92EF9-64D5-4741-91F4-E9996614A225}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E8B92EF9-64D5-4741-91F4-E9996614A225}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E8B92EF9-64D5-4741-91F4-E9996614A225}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{E8B92EF9-64D5-4741-91F4-E9996614A225}.Debug|Any CPU.Build.0 = Release|Any CPU
-		{E8B92EF9-64D5-4741-91F4-E9996614A225}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{9FAB7773-D696-49F1-847E-0EF3251C1F6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9FAB7773-D696-49F1-847E-0EF3251C1F6D}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{9FAB7773-D696-49F1-847E-0EF3251C1F6D}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

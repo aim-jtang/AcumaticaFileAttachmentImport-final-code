@@ -1,4 +1,6 @@
-﻿using AcumaticaFilesImport.Files.Csv;
+﻿using System;
+using AcumaticaFilesImport.Files;
+using AcumaticaFilesImport.Files.Csv;
 using Microsoft.Extensions.Logging;
 
 namespace AcumaticaFilesImport.Logging

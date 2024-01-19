@@ -1,8 +1,14 @@
-﻿namespace Acumatica_File_Importer.Acumatica
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Acumatica_File_Importer.Acumatica
 {
-    public static class Globals
+   public static class Globals
     {
-        public static string INVALIDSTOCKITEM = "Invalid Stockitem.";
+        public static string INVALIDSTOCKITEM ="Invalid Stockitem.";
         public static string EMPTYCONFIGURATION = "Configuration Is Empty.";
         public static string FOLDERNOTEXISTS = "Folder Does Not Exist!";
         public static string NOREADBLEFILE = "No Readble File Detected In The Folder!";
